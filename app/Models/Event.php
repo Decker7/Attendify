@@ -8,4 +8,12 @@ use Illuminate\Database\Eloquent\Model;
 class Event extends Model
 {
     use HasFactory;
+
+    protected $fillable = ['name', 'description', 'date', 'location'];
+
+    // Relationship with invitations
+    public function invitations()
+    {
+        return $this->hasMany(Invitation::class);
+    }
 }

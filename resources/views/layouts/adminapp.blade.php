@@ -45,7 +45,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
+                                    <a href="{{route('events.lists')}}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-white rounded-md group gap-x-3 hover:bg-blue-600">
                                         <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
+                                    <a href="{{route('events.create')}}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-white rounded-md group gap-x-3 hover:bg-blue-600">
                                         <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">

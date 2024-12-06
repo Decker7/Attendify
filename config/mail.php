@@ -94,6 +94,13 @@ return [
                 'postmark',
             ],
         ],
+
+        'mailers' => [
+            // ... other mailers ...
+            'multiple' => [
+                'transport' => 'multiple',
+            ],
+        ],
     ],
 
     /*

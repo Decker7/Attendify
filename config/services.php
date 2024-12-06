@@ -31,4 +31,22 @@ return [
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
 
+    'mailtrap' => [
+        'transport' => 'smtp',
+        'host' => env('MAILTRAP_HOST'),
+        'port' => env('MAILTRAP_PORT'),
+        'encryption' => env('MAILTRAP_ENCRYPTION', 'tls'),
+        'username' => env('MAILTRAP_USERNAME'),
+        'password' => env('MAILTRAP_PASSWORD'),
+    ],
+
+    'gmail' => [
+        'transport' => 'smtp',
+        'host' => env('GMAIL_HOST', 'smtp.gmail.com'),
+        'port' => env('GMAIL_PORT', 587),
+        'encryption' => env('GMAIL_ENCRYPTION', 'tls'),
+        'username' => env('GMAIL_USERNAME'),
+        'password' => env('GMAIL_PASSWORD'),
+    ],
+
 ];
