@@ -8,38 +8,73 @@ use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
-// Public Routes
-Route::get('/', function () {
-    return view('welcome');
-});
+/*
+|--------------------------------------------------------------------------
+| Authentication Routes
+|--------------------------------------------------------------------------
+*/
 
-// Authentication Routes
 require __DIR__ . '/auth.php';
 
-// Authenticated Routes
+/*
+|--------------------------------------------------------------------------
+| Authenticated Routes
+|--------------------------------------------------------------------------
+|
+| These routes are accessible only to authenticated users.
+|
+*/
 Route::middleware(['auth', 'verified'])->group(function () {
-    // Dashboard Routes
+    /*
+    |----------------------------------------------------------------------
+    | Dashboard Routes
+    |----------------------------------------------------------------------
+    */
     Route::get('/dashboard', function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Profile Routes
+    /*
+    |----------------------------------------------------------------------
+    | Profile Routes
+    |----------------------------------------------------------------------
+    */
     Route::prefix('profile')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
 
-    // User Dashboard Route
+    /*
+    |----------------------------------------------------------------------
+    | User Dashboard Routes
+    |----------------------------------------------------------------------
+    */
     Route::get('/user/dashboard', [DashboardController::class, 'user'])->name('user.dashboard');
 });
 
-// Admin Routes
+/*
+|--------------------------------------------------------------------------
+| Admin Routes
+|--------------------------------------------------------------------------
+|
+| These routes are accessible only to authenticated users with admin
+| permissions.
+|
+*/
 Route::middleware(['auth'])->group(function () {
-    // Admin Dashboard
+    /*
+    |----------------------------------------------------------------------
+    | Admin Dashboard Routes
+    |----------------------------------------------------------------------
+    */
     Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
-    // Event Management Routes
+    /*
+    |----------------------------------------------------------------------
+    | Event Management Routes
+    |----------------------------------------------------------------------
+    */
     Route::prefix('events')->group(function () {
         Route::get('/', [EventController::class, 'index'])->name('events.lists');
         Route::get('/create', [EventController::class, 'create'])->name('events.create');
@@ -47,15 +82,31 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
         Route::get('/{event}/edit', [EventController::class, 'edit'])->name('events.edit');
         Route::put('/{event}', [EventController::class, 'update'])->name('events.update');
-        Route::delete('/{event}', [EventController::class, 'destroy'])->name('events.destroy');
+        Route::delete('/events/{event}', [EventController::class, 'destroy'])->name('events.destroy');
         Route::post('/{event}/invitations', [EventController::class, 'addInvitation'])->name('events.addInvitation');
     });
 
-    // Invitation Management Routes
+    /*
+    |----------------------------------------------------------------------
+    | Invitation Management Routes
+    |----------------------------------------------------------------------
+    */
     Route::delete('/invitations/{invitation}', [InvitationController::class, 'destroy'])->name('admin.invitations.destroy');
+    Route::get('/admin/attendance-list', [InvitationController::class, 'attendanceList'])->name('admin.attendance.list');
+    Route::get('/attendance/{id}/view', [InvitationController::class, 'viewAttendance'])->name('attendance.view');
+    Route::patch('/attendance/{id}/update', [InvitationController::class, 'updateAttendance'])->name('attendance.update');
+    Route::delete('/attendance/{id}/delete', [InvitationController::class, 'destroy'])->name('attendance.destroy');
 });
 
-// Email Testing Route (for development only, remove in production)
+/*
+|--------------------------------------------------------------------------
+| Development Routes
+|--------------------------------------------------------------------------
+|
+| Temporary routes for development and testing purposes only.
+| These should be removed in production.
+|
+*/
 Route::get('/test-email', function () {
     Mail::raw('Test email from Laravel', function ($message) {
         $message->to('recipient@example.com')

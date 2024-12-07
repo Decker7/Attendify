@@ -1,13 +1,14 @@
 @extends('layouts.adminapp')
 
 @section('admin')
-    <div class="container mx-auto mt-8">
-        <h1 class="mb-6 text-3xl font-bold">Edit Event</h1>
+    <div class="container px-4 mx-auto mt-8 sm:px-6 lg:px-8">
+        <h1 class="mb-6 text-3xl font-bold text-gray-900">Edit Event</h1>
 
         <!-- Display Errors -->
         @if ($errors->any())
-            <div class="px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded">
-                <ul class="pl-5 list-disc">
+            <div class="px-4 py-3 mb-4 text-red-700 bg-red-100 border-l-4 border-red-500 rounded-r-lg">
+                <p class="font-bold">Please correct the following errors:</p>
+                <ul class="mt-2 list-disc list-inside">
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
                     @endforeach
@@ -15,150 +16,69 @@
             </div>
         @endif
 
-        <!-- Update Event Form -->
-        <form id="updateEventForm" action="{{ route('events.update', $event->id) }}" method="POST"
-            class="px-8 pt-6 pb-8 mb-4 bg-white rounded shadow-md">
-            @csrf
-            @method('PUT')
+        <div class="overflow-hidden bg-white rounded-lg shadow-md">
+            <!-- Update Event Form -->
+            <form id="updateEventForm" action="{{ route('events.update', $event->id) }}" method="POST" class="p-6 space-y-6">
+                @csrf
+                @method('PUT')
 
-            <!-- Event Details -->
-            <div class="mb-4">
-                <label for="name" class="block mb-2 text-sm font-bold text-gray-700">Event Name:</label>
-                <input type="text" name="name" id="name" value="{{ $event->name }}" required
-                    class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline">
-            </div>
+                <!-- Event Details -->
+                <div class="grid grid-cols-1 gap-6 md:grid-cols-2">
+                    <div>
+                        <label for="name" class="block text-sm font-medium text-gray-700">Event Name</label>
+                        <input type="text" name="name" id="name" value="{{ $event->name }}" required
+                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    </div>
 
-            <div class="mb-4">
-                <label for="description" class="block mb-2 text-sm font-bold text-gray-700">Description:</label>
-                <textarea name="description" id="description" rows="5" required
-                    class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline">{{ $event->description }}</textarea>
-            </div>
+                    <div>
+                        <label for="date" class="block text-sm font-medium text-gray-700">Date & Time</label>
+                        <input type="datetime-local" name="date" id="date" value="{{ $event->date }}" required
+                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    </div>
 
-            <div class="mb-4">
-                <label for="date" class="block mb-2 text-sm font-bold text-gray-700">Date & Time:</label>
-                <input type="datetime-local" name="date" id="date" value="{{ $event->date }}" required
-                    class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline">
-            </div>
+                    <div class="md:col-span-2">
+                        <label for="location" class="block text-sm font-medium text-gray-700">Location</label>
+                        <input type="text" name="location" id="location" value="{{ $event->location }}" required
+                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">
+                    </div>
 
-            <div class="mb-4">
-                <label for="location" class="block mb-2 text-sm font-bold text-gray-700">Location:</label>
-                <input type="text" name="location" id="location" value="{{ $event->location }}" required
-                    class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline">
-            </div>
-
-            <!-- Invitations Management -->
-            <div class="mb-4">
-                <h3 class="mb-2 text-lg font-bold text-gray-700">Manage Invitations:</h3>
-
-                <!-- Add Email Form -->
-                <div class="flex items-center mb-4 space-x-2">
-                    <input type="email" id="new-email" placeholder="Enter email address" required
-                        class="w-full px-3 py-2 leading-tight text-gray-700 border rounded shadow appearance-none focus:outline-none focus:shadow-outline">
-                    <button type="button" id="add-email"
-                        class="px-4 py-2 font-bold text-white bg-green-500 rounded hover:bg-green-700">
-                        Add
-                    </button>
+                    <div class="md:col-span-2">
+                        <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                        <textarea name="description" id="description" rows="4" required
+                            class="block w-full mt-1 border-gray-300 rounded-md shadow-sm focus:border-blue-300 focus:ring focus:ring-blue-200 focus:ring-opacity-50">{{ $event->description }}</textarea>
+                    </div>
                 </div>
 
-                <!-- List Current Invitations -->
-                <ul id="invitation-list" class="mt-4">
-                    @foreach ($event->invitations as $invitation)
-                        <li class="flex items-center justify-between py-2 border-b" data-id="{{ $invitation->id }}">
-                            <span>{{ $invitation->email }}</span>
-                            <button type="button" class="px-2 py-1 text-white bg-red-500 rounded remove-invitation"
-                                data-id="{{ $invitation->id }}">
-                                Remove
-                            </button>
-                        </li>
-                    @endforeach
-                </ul>
-            </div>
+                <!-- Update Event Button -->
+                <div class="flex items-center justify-end">
+                    <button type="submit"
+                        class="px-4 py-2 text-white transition-colors duration-300 bg-blue-600 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2">
+                        Update Event
+                    </button>
+                </div>
+            </form>
+        </div>
 
-            <!-- Update Event Button -->
-            <div class="flex items-center justify-between">
-                <button type="submit"
-                    class="px-4 py-2 font-bold text-white bg-blue-500 rounded hover:bg-blue-700 focus:outline-none focus:shadow-outline">
-                    Update Event
-                </button>
+        <!-- List Invitations -->
+        <div class="mt-8 overflow-hidden bg-white rounded-lg shadow-md">
+            <div class="px-6 py-4 border-b border-gray-200 bg-gray-50">
+                <h3 class="text-lg font-semibold text-gray-900">Invitations</h3>
             </div>
-        </form>
+            <div class="p-6">
+                @if ($event->invitations->isNotEmpty())
+                    <ul class="divide-y divide-gray-200">
+                        @foreach ($event->invitations as $invitation)
+                            <li class="flex items-center justify-between py-3">
+                                <span class="text-gray-800">{{ $invitation->email }}</span>
+                                <span class="text-sm text-gray-500">Invited on
+                                    {{ $invitation->created_at->format('M d, Y') }}</span>
+                            </li>
+                        @endforeach
+                    </ul>
+                @else
+                    <p class="italic text-gray-500">No invitations sent yet.</p>
+                @endif
+            </div>
+        </div>
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            const addEmailBtn = document.getElementById('add-email');
-            const emailInput = document.getElementById('new-email');
-            const invitationList = document.getElementById('invitation-list');
-
-            // Add Invitation
-            addEmailBtn.addEventListener('click', () => {
-                const email = emailInput.value.trim();
-
-                if (!email) {
-                    alert('Please enter an email address.');
-                    return;
-                }
-
-                fetch(`{{ route('events.addInvitation', $event->id) }}`, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                            'Content-Type': 'application/json',
-                        },
-                        body: JSON.stringify({
-                            email
-                        }),
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            const li = document.createElement('li');
-                            li.classList.add('flex', 'items-center', 'justify-between', 'py-2',
-                                'border-b');
-                            li.dataset.id = data.invitation.id;
-                            li.innerHTML = `
-                                <span>${data.invitation.email}</span>
-                                <button type="button" class="px-2 py-1 text-white bg-red-500 rounded remove-invitation" data-id="${data.invitation.id}">
-                                    Remove
-                                </button>
-                            `;
-                            invitationList.appendChild(li);
-                            emailInput.value = '';
-                        } else {
-                            alert(data.message || 'Error adding invitation.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An unexpected error occurred. Please try again.');
-                    });
-            });
-
-            // Remove Invitation
-            invitationList.addEventListener('click', (e) => {
-                if (!e.target.classList.contains('remove-invitation')) return;
-
-                const id = e.target.dataset.id;
-
-                fetch(`{{ route('admin.invitations.destroy', '') }}/${id}`, {
-                        method: 'DELETE',
-                        headers: {
-                            'X-CSRF-TOKEN': '{{ csrf_token() }}',
-                        },
-                    })
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.success) {
-                            document.querySelector(`[data-id="${id}"]`).remove();
-                        } else {
-                            alert(data.message || 'Error removing invitation.');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('An unexpected error occurred. Please try again.');
-                    });
-            });
-        });
-    </script>
 @endsection

@@ -16,4 +16,9 @@ class Event extends Model
     {
         return $this->hasMany(Invitation::class);
     }
+
+    public function attendances()
+    {
+        return $this->hasMany(Attendance::class);
+    }
 }

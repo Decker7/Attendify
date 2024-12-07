@@ -37,10 +37,14 @@ class AuthenticatedSessionController extends Controller
         if ($user->user_type === 'admin') {
             // Redirect to the admin dashboard if user_type is 'admin'
             return redirect()->route('admin.dashboard');
-        } else {
-            // Redirect to the user dashboard if user_type is 'user' (default)
+        }
+        
+        if ($user->user_type === 'user') {
+            // Redirect to the admin dashboard if user_type is 'admin'
             return redirect()->route('user.dashboard');
         }
+        
+        
     }
 
     /**
@@ -56,6 +60,6 @@ class AuthenticatedSessionController extends Controller
         $request->session()->regenerateToken();
 
         // Redirect to home page
-        return redirect('/');
+        return redirect('login');
     }
 }

@@ -9,10 +9,12 @@ return new class extends Migration
     /**
      * Run the migrations.
      */
-    public function up(): void
+    public function up()
     {
         Schema::create('attendances', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('event_id')->constrained()->onDelete('cascade');
+            $table->enum('status', ['present', 'absent', 'late', 'excuse', 'not_signed'])->default('not_signed');
             $table->timestamps();
         });
     }

@@ -67,7 +67,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
+                                    <a href="{{route('admin.attendance.list')}}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-white rounded-md group gap-x-3 hover:bg-blue-600">
                                         <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -157,7 +157,7 @@
                                 </svg>
                                 Admin Profile
                             </a>
-                            <form action="#" method="POST" class="mt-2">
+                            <form action="{{ route('logout') }}" method="POST" class="mt-2">
                                 @csrf
                                 <button type="submit"
                                     class="flex items-center w-full p-2 -mx-2 text-sm font-semibold leading-6 text-white rounded-md gap-x-4 hover:bg-blue-600">

@@ -79,6 +79,7 @@ class EventController extends Controller
         return redirect()->route('events.lists')->with('success', 'Event updated successfully.');
     }
 
+
     // Add a new invitation to an event
     public function addInvitation(Request $request, $id)
     {
@@ -102,10 +103,10 @@ class EventController extends Controller
 
 
     // Remove an invitation
-    public function destroy(Invitation $invitation)
+    public function destroy($id)
     {
-        $invitation->delete();
-
-        return response()->json(['success' => true]);
+        $event = Event::findOrFail($id); // Find the event or throw a 404 error
+        $event->delete(); // Delete the event
+        return redirect()->route('events.lists')->with('success', 'Event deleted successfully.');
     }
 }

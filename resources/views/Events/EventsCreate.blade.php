@@ -4,6 +4,39 @@
     <div class="container px-4 mx-auto mt-8 sm:px-6 lg:px-8">
         <h1 class="mb-6 text-3xl font-bold text-gray-900">Create Event</h1>
 
+        @if (session('success'))
+            <div id="success-alert"
+                class="relative px-4 py-3 mb-4 bg-green-100 border-l-4 border-green-500 rounded-r shadow-md" role="alert">
+                <div class="flex items-center">
+                    <div class="py-1">
+                        <svg class="w-6 h-6 mr-4 text-green-500 fill-current" xmlns="http://www.w3.org/2000/svg"
+                            viewBox="0 0 20 20">
+                            <path
+                                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" />
+                        </svg>
+                    </div>
+                    <div>
+                        <p class="font-bold text-green-700">Success</p>
+                        <p class="text-sm text-green-700">{{ session('success') }}</p>
+                    </div>
+                </div>
+                <button type="button" class="absolute top-0 right-0 mt-4 mr-4 text-green-700 hover:text-green-900"
+                    onclick="document.getElementById('success-alert').remove()">
+                    <span class="text-2xl">&times;</span>
+                </button>
+            </div>
+
+            <script>
+                // Automatically remove the alert after 5 seconds
+                setTimeout(function() {
+                    var alert = document.getElementById('success-alert');
+                    if (alert) {
+                        alert.remove();
+                    }
+                }, 5000);
+            </script>
+        @endif
+
         @if ($errors->any())
             <div class="px-4 py-3 mb-4 text-red-700 bg-red-100 border border-red-400 rounded-md">
                 <ul class="pl-5 list-disc">
