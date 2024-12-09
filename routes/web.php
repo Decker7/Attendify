@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
+use App\Http\Controllers\FeedbackController;
+use App\Http\Controllers\AdminFeedbackController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\InvitationController;
 use Illuminate\Support\Facades\Mail;
@@ -51,6 +53,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     |----------------------------------------------------------------------
     */
     Route::get('/user/dashboard', [DashboardController::class, 'user'])->name('user.dashboard');
+    Route::get('/user/events', [EventController::class, 'userEvents'])->name('user.events');
+
+    Route::post('/register/attendance/{id}', [EventController::class, 'registerAttendance'])->name('register.attendance');
+    Route::post('/mark/attendance/{id}', [EventController::class, 'markAttendanceAsAttended'])->name('mark.attendance');
 });
 
 /*
@@ -96,6 +102,19 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/attendance/{id}/view', [InvitationController::class, 'viewAttendance'])->name('attendance.view');
     Route::patch('/attendance/{id}/update', [InvitationController::class, 'updateAttendance'])->name('attendance.update');
     Route::delete('/attendance/{id}/delete', [InvitationController::class, 'destroy'])->name('attendance.destroy');
+});
+
+
+Route::middleware(['auth'])->group(function () {
+    Route::get('/feedback', [FeedbackController::class, 'index'])->name('feedback.index');
+    Route::post('/feedback', [FeedbackController::class, 'store'])->name('feedback.store');
+});
+
+Route::prefix('admin')->middleware(['auth'])->group(function () {
+    Route::get('/feedback', [AdminFeedbackController::class, 'index'])->name('admin.feedback.index');
+    Route::get('/feedback/{id}/edit', [AdminFeedbackController::class, 'edit'])->name('admin.feedback.edit');
+    Route::put('/feedback/{id}', [AdminFeedbackController::class, 'update'])->name('admin.feedback.update');
+    Route::delete('/feedback/{id}', [AdminFeedbackController::class, 'destroy'])->name('admin.feedback.destroy');
 });
 
 /*

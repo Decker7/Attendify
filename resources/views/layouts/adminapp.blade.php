@@ -45,7 +45,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('events.lists')}}"
+                                    <a href="{{ route('events.lists') }}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-white rounded-md group gap-x-3 hover:bg-blue-600">
                                         <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -56,7 +56,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('events.create')}}"
+                                    <a href="{{ route('events.create') }}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-white rounded-md group gap-x-3 hover:bg-blue-600">
                                         <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,7 +67,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="{{route('admin.attendance.list')}}"
+                                    <a href="{{ route('admin.attendance.list') }}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-white rounded-md group gap-x-3 hover:bg-blue-600">
                                         <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -75,6 +75,17 @@
                                                 d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-3 7h3m-3 4h3m-6-4h.01M9 16h.01" />
                                         </svg>
                                         Manage Attendance
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="{{ route('admin.feedback.index') }}"
+                                        class="flex p-2 text-sm font-semibold leading-6 text-white rounded-md group gap-x-3 hover:bg-blue-600">
+                                        <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M7 8h10M7 12h4m1 8l-4-4H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-3l-4 4z" />
+                                        </svg>
+                                        Manage Feedback
                                     </a>
                                 </li>
                                 <li>
@@ -148,7 +159,7 @@
                             </ul>
                         </li>
                         <li class="mt-auto">
-                            <a href="#"
+                            <a href="{{ route('profile.edit') }}"
                                 class="flex items-center p-2 -mx-2 text-sm font-semibold leading-6 text-white rounded-md gap-x-4 hover:bg-blue-600">
                                 <svg class="w-6 h-6 text-blue-200 shrink-0 group-hover:text-white" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">

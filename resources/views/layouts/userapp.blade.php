@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Admin Dashboard - Event and Attendance Management System</title>
+    <title>User - Event and Attendance Management System</title>
     @vite('resources/css/app.css')
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 </head>
@@ -34,7 +34,7 @@
                         <li>
                             <ul role="list" class="-mx-2 space-y-1">
                                 <li>
-                                    <a href="#"
+                                    <a href="{{route('user.dashboard')}}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-yellow-800 rounded-md group gap-x-3 hover:bg-yellow-200">
                                         <svg class="w-6 h-6 text-yellow-600 shrink-0 group-hover:text-yellow-800"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -45,7 +45,7 @@
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#"
+                                    <a href="{{route('user.events')}}"
                                         class="flex p-2 text-sm font-semibold leading-6 text-yellow-800 rounded-md group gap-x-3 hover:bg-yellow-200">
                                         <svg class="w-6 h-6 text-yellow-600 shrink-0 group-hover:text-yellow-800"
                                             fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -55,10 +55,21 @@
                                         Events
                                     </a>
                                 </li>
+                                <li>
+                                    <a href="{{route('feedback.index')}}"
+                                        class="flex p-2 text-sm font-semibold leading-6 text-yellow-800 rounded-md group gap-x-3 hover:bg-yellow-200">
+                                        <svg class="w-6 h-6 text-yellow-600 shrink-0 group-hover:text-yellow-800"
+                                            fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                                        </svg>
+                                        Feedback
+                                    </a>
+                                </li>
                             </ul>
                         </li>
                         <li class="mt-auto">
-                            <a href="#"
+                            <a href="{{route('profile.edit')}}"
                                 class="flex items-center p-2 -mx-2 text-sm font-semibold leading-6 text-yellow-800 rounded-md gap-x-4 hover:bg-yellow-200">
                                 <svg class="w-6 h-6 text-yellow-600 shrink-0 group-hover:text-yellow-800" fill="none"
                                     viewBox="0 0 24 24" stroke="currentColor">

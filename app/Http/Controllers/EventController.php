@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Event;
 use App\Models\Invitation;
+use App\Models\Attendance;
 use App\Mail\SendInvitation;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+
 
 class EventController extends Controller
 {
@@ -108,5 +111,64 @@ class EventController extends Controller
         $event = Event::findOrFail($id); // Find the event or throw a 404 error
         $event->delete(); // Delete the event
         return redirect()->route('events.lists')->with('success', 'Event deleted successfully.');
+    }
+
+
+    public function userEvents()
+    {
+        // Get the logged-in user's email
+        $userEmail = Auth::user()->email;
+
+        // Get all invitations for the user
+        $invitations = Invitation::where('email', $userEmail)->pluck('event_id');
+
+        // Get all events based on the event IDs in the invitations
+        $events = Event::whereIn('id', $invitations)->get();
+
+        // Pass the events to the view
+        return view('Events.UserEvents', ['events' => $events]);
+    }
+
+    public function registerAttendance($id)
+    {
+        // Get the logged-in user's ID
+        $userId = Auth::id();
+
+        // Check if the user has already registered for the event
+        $attendance = Attendance::where('user_id', $userId)
+            ->where('event_id', $id)
+            ->first();
+
+        // If no record exists, create a new attendance record
+        if (!$attendance) {
+            $attendance = Attendance::create([
+                'user_id' => $userId,
+                'event_id' => $id,
+                'status' => 'registered',  // Mark the attendance as registered initially
+            ]);
+        }
+
+        return redirect()->route('user.events')->with('success', 'Attendance registered successfully.');
+    }
+
+    public function markAttendanceAsAttended($id)
+    {
+        // Get the logged-in user's ID
+        $userId = Auth::id();
+
+        // Find the attendance record
+        $attendance = Attendance::where('user_id', $userId)
+            ->where('event_id', $id)
+            ->first();
+
+        // Update the status to 'attended' if the user has registered
+        if ($attendance) {
+            $attendance->status = 'attended';
+            $attendance->save();
+
+            return redirect()->route('user.events')->with('success', 'Attendance marked as attended.');
+        }
+
+        return redirect()->route('user.events')->with('error', 'You are not registered for this event.');
     }
 }
