@@ -38,7 +38,7 @@ class ProfileController extends Controller
     }
 
     /**
-     * Delete the user's account.
+     * Delete the user's account.s
      */
     public function destroy(Request $request): RedirectResponse
     {

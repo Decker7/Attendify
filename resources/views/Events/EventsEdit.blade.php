@@ -70,8 +70,6 @@
                         @foreach ($event->invitations as $invitation)
                             <li class="flex items-center justify-between py-3">
                                 <span class="text-gray-800">{{ $invitation->email }}</span>
-                                <span class="text-sm text-gray-500">Invited on
-                                    {{ $invitation->created_at->format('M d, Y') }}</span>
                             </li>
                         @endforeach
                     </ul>

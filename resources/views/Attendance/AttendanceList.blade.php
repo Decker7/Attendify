@@ -12,15 +12,15 @@
             </div>
             <div class="p-6 bg-white rounded-lg shadow-md">
                 <h3 class="text-lg font-semibold text-gray-700">Total Invitations</h3>
-                <p class="text-3xl font-bold text-green-600">{{ $events->sum('total') }}</p>
+                <p class="text-3xl font-bold text-green-600">{{ $totalInvitationsSum }}</p>
             </div>
             <div class="p-6 bg-white rounded-lg shadow-md">
                 <h3 class="text-lg font-semibold text-gray-700">Total Present</h3>
-                <p class="text-3xl font-bold text-indigo-600">{{ $events->sum('present') }}</p>
+                <p class="text-3xl font-bold text-indigo-600">{{ $totalPresent }}</p>
             </div>
             <div class="p-6 bg-white rounded-lg shadow-md">
                 <h3 class="text-lg font-semibold text-gray-700">Total Absent</h3>
-                <p class="text-3xl font-bold text-red-600">{{ $events->sum('absent') }}</p>
+                <p class="text-3xl font-bold text-red-600">{{ $totalAbsent }}</p>
             </div>
         </div>
 
@@ -36,7 +36,6 @@
                             <th class="p-4 border-b">Total Invitations</th>
                             <th class="p-4 border-b">Present</th>
                             <th class="p-4 border-b">Absent</th>
-                            <th class="p-4 border-b">Attendance Rate</th>
                             <th class="p-4 border-b">Action</th>
                         </tr>
                     </thead>
@@ -45,7 +44,7 @@
                             <tr class="hover:bg-gray-50">
                                 <td class="p-4 border-b">{{ $event['name'] }}</td>
                                 <td class="p-4 border-b">{{ \Carbon\Carbon::parse($event['date'])->format('d M Y') }}</td>
-                                <td class="p-4 border-b">{{ $event['total'] }}</td>
+                                <td class="p-4 border-b">{{ $event['totalInvitations'] }}</td>
                                 <td class="p-4 border-b">
                                     <span class="px-2 py-1 text-sm text-green-800 bg-green-100 rounded-full">
                                         {{ $event['present'] }}
@@ -56,17 +55,8 @@
                                         {{ $event['absent'] }}
                                     </span>
                                 </td>
-                                <td class="p-4 border-b">
-                                    @php
-                                        $attendanceRate =
-                                            $event['total'] > 0 ? ($event['present'] / $event['total']) * 100 : 0;
-                                    @endphp
-                                    <div class="w-full h-2 bg-gray-200 rounded-full">
-                                        <div class="h-2 bg-blue-600 rounded-full" style="width: {{ $attendanceRate }}%">
-                                        </div>
-                                    </div>
-                                    <span class="text-sm text-gray-600">{{ number_format($attendanceRate, 1) }}%</span>
-                                </td>
+                               
+
                                 <td class="p-4 border-b">
                                     <a href="{{ route('attendance.view', ['id' => $event['id']]) }}"
                                         class="text-blue-600 hover:underline">View Details</a>

@@ -144,7 +144,7 @@ class EventController extends Controller
             $attendance = Attendance::create([
                 'user_id' => $userId,
                 'event_id' => $id,
-                'status' => 'registered',  // Mark the attendance as registered initially
+                'status' => 'present',  // Mark the attendance as registered initially
             ]);
         }
 
@@ -155,20 +155,30 @@ class EventController extends Controller
     {
         // Get the logged-in user's ID
         $userId = Auth::id();
-
+    
         // Find the attendance record
         $attendance = Attendance::where('user_id', $userId)
             ->where('event_id', $id)
             ->first();
-
-        // Update the status to 'attended' if the user has registered
-        if ($attendance) {
-            $attendance->status = 'attended';
+    
+        // Update the status to 'present' if the user is registered
+        if ($attendance && $attendance->status == 'registered') {
+            $attendance->status = 'present';
             $attendance->save();
-
+    
             return redirect()->route('user.events')->with('success', 'Attendance marked as attended.');
         }
-
+    
         return redirect()->route('user.events')->with('error', 'You are not registered for this event.');
+    }
+    
+
+    public function show($id)
+    {
+        // Fetch the event along with its invitations
+        $event = Event::with('invitations')->findOrFail($id);
+
+        // Pass the event data to the view
+        return view('Events.EventsView', compact('event'));
     }
 }

@@ -1,12 +1,19 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AdminProfileController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\EventController;
 use App\Http\Controllers\FeedbackController;
 use App\Http\Controllers\AdminFeedbackController;
 use App\Http\Controllers\MailController;
 use App\Http\Controllers\InvitationController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\DonateController;
+use App\Http\Controllers\PaymentController;
+
+
+
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Route;
 
@@ -26,6 +33,9 @@ require __DIR__ . '/auth.php';
 | These routes are accessible only to authenticated users.
 |
 */
+
+
+
 Route::middleware(['auth', 'verified'])->group(function () {
     /*
     |----------------------------------------------------------------------
@@ -46,6 +56,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
         Route::delete('/', [ProfileController::class, 'destroy'])->name('profile.destroy');
     });
+
+
 
     /*
     |----------------------------------------------------------------------
@@ -76,6 +88,30 @@ Route::middleware(['auth'])->group(function () {
     */
     Route::get('/admin/dashboard', [DashboardController::class, 'admin'])->name('admin.dashboard');
 
+    Route::put('/admin/profile/password', [AdminProfileController::class, 'updatePassword'])->name('profile.adminpasswordupdate');
+
+    Route::get('/events/donate-list', [DonateController::class, 'index'])->name('events.donateList');
+    Route::patch('/donate/{eventId}/toggle', [DonateController::class, 'toggleDonationStatus'])->name('donate.toggle');
+    Route::get('/user-event-donations', [DonateController::class, 'userEventDonationList'])->name('user.event.donations');
+
+    // Show the donation form for a specific event
+    Route::get('/donate/{eventId}', [DonateController::class, 'showDonationForm'])->name('donation.form');
+
+    // Store the donation
+    Route::post('/donate/{eventId}', [DonateController::class, 'storeDonation'])->name('donation.store');
+
+    Route::post('/payment/checkout/{eventId}', [PaymentController::class, 'createCheckoutSession'])->name('payment.checkout');
+    Route::get('/payment/success/{eventId}', [PaymentController::class, 'handleSuccess'])->name('payment.success');
+    Route::get('/payment/cancel/{eventId}', [PaymentController::class, 'handleCancel'])->name('payment.cancel');
+
+
+
+
+
+    Route::get('/admin/profile', [AdminProfileController::class, 'show'])->name('admin.profile');
+    Route::post('/admin/profile/change-password', [AdminProfileController::class, 'changePassword'])->name('admin.changePassword');
+
+
     /*
     |----------------------------------------------------------------------
     | Event Management Routes
@@ -83,6 +119,7 @@ Route::middleware(['auth'])->group(function () {
     */
     Route::prefix('events')->group(function () {
         Route::get('/', [EventController::class, 'index'])->name('events.lists');
+        Route::get('/events/{id}', [EventController::class, 'show'])->name('events.show');
         Route::get('/create', [EventController::class, 'create'])->name('events.create');
         Route::post('/', [EventController::class, 'store'])->name('events.store');
         Route::get('/{event}', [EventController::class, 'show'])->name('events.show');
@@ -115,6 +152,15 @@ Route::prefix('admin')->middleware(['auth'])->group(function () {
     Route::get('/feedback/{id}/edit', [AdminFeedbackController::class, 'edit'])->name('admin.feedback.edit');
     Route::put('/feedback/{id}', [AdminFeedbackController::class, 'update'])->name('admin.feedback.update');
     Route::delete('/feedback/{id}', [AdminFeedbackController::class, 'destroy'])->name('admin.feedback.destroy');
+
+    Route::prefix('users')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/create', [UserController::class, 'create'])->name('users.create');
+        Route::post('/store', [UserController::class, 'store'])->name('users.store');
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/{id}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('users.destroy');
+    });
 });
 
 /*

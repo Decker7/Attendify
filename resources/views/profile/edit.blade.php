@@ -27,5 +27,5 @@
                 </div>
             </div>
         </div>
-    </div>k
+    </div>
 @endsection

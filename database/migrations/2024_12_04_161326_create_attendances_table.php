@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('user_id');  // Foreign key for users table
             $table->unsignedBigInteger('event_id'); // Foreign key for events table
-            $table->enum('status', ['registered', 'attended'])->default('registered');
+            $table->enum('status', ['registered', 'present', 'absent'])->default('registered');
             $table->timestamps();
 
             // Add foreign key constraints

@@ -49,4 +49,9 @@ return [
         'password' => env('GMAIL_PASSWORD'),
     ],
 
+    'stripe' => [
+    'secret' => env('STRIPE_SECRET'),
+    'key' => env('STRIPE_PUBLISHABLE_KEY'),
+],
+
 ];

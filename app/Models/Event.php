@@ -21,4 +21,9 @@ class Event extends Model
     {
         return $this->hasMany(Attendance::class);
     }
+
+    public function donate()
+    {
+        return $this->hasOne(Donate::class);
+    }
 }
